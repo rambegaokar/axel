@@ -4,7 +4,7 @@
   * Copyright 2001 Wilmer van der Gaast                                *
   \********************************************************************/
 
-/* filesearching.com searcher include file				*/
+/* filesearching.com searcher include file                */
 
 /*
   This program is free software; you can redistribute it and/or modify
@@ -25,11 +25,11 @@
 
 typedef struct
 {
-	char url[MAX_STRING];
-	double speed_start_time;
-	int speed, size;
-	pthread_t speed_thread[1];
-	conf_t *conf;
+    char url[MAX_STRING];
+    double speed_start_time;
+    int speed, size;
+    pthread_t speed_thread[1];
+    conf_t *conf;
 } search_t;
 
 int search_makelist( search_t *results, char *url );

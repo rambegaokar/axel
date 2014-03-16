@@ -4,7 +4,7 @@
   * Copyright 2001 Wilmer van der Gaast                                *
   \********************************************************************/
 
-/* TCP control include file						*/
+/* TCP control include file                        */
 
 /*
   This program is free software; you can redistribute it and/or modify

@@ -4,7 +4,7 @@
   * Copyright 2001 Wilmer van der Gaast                                *
   \********************************************************************/
 
-/* HTTP control include file						*/
+/* HTTP control include file                        */
 
 /*
   This program is free software; you can redistribute it and/or modify
@@ -23,21 +23,21 @@
   Suite 330, Boston, MA  02111-1307  USA
 */
 
-#define MAX_QUERY	2048		/* Should not grow larger..	*/
+#define MAX_QUERY    2048        /* Should not grow larger..    */
 
 typedef struct
 {
-	char host[MAX_STRING];
-	char auth[MAX_STRING];
-	char request[MAX_QUERY];
-	char headers[MAX_QUERY];
-	int proto;			/* FTP through HTTP proxies	*/
-	int proxy;
-	long long int firstbyte;
-	long long int lastbyte;
-	int status;
-	int fd;
-	char *local_if;
+    char host[MAX_STRING];
+    char auth[MAX_STRING];
+    char request[MAX_QUERY];
+    char headers[MAX_QUERY];
+    int proto;            /* FTP through HTTP proxies    */
+    int proxy;
+    long long int firstbyte;
+    long long int lastbyte;
+    int status;
+    int fd;
+    char *local_if;
 } http_t;
 
 int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, char *user, char *pass );

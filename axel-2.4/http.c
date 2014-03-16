@@ -29,7 +29,8 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
 {
     char base64_encode[64] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         "abcdefghijklmnopqrstuvwxyz0123456789+/";
-    char auth[MAX_STRING];
+    char auth[MAX_STRING], pauth[MAX_STRING];
+    char *ppass, *puser;
     conn_t tconn[1];
     int i;
     
@@ -48,6 +49,8 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
             }
             host = tconn->host;
             port = tconn->port;
+            puser = tconn->user;
+            ppass = tconn->pass;
             conn->proxy = 1;
         }
         else
@@ -82,6 +85,25 @@ int http_connect( http_t *conn, int proto, char *proxy, char *host, int port, ch
         }
     }
     
+    if( *puser == 0 )
+    {
+        *conn->proxy_auth = 0;
+    }
+    else
+    {
+        memset( pauth, 0, MAX_STRING );
+        snprintf( pauth, MAX_STRING, "%s:%s", puser, ppass );
+        for( i = 0; pauth[i*3]; i ++ )
+        {
+            conn->proxy_auth[i*4] = base64_encode[(pauth[i*3]>>2)];
+            conn->proxy_auth[i*4+1] = base64_encode[((pauth[i*3]&3)<<4)|(pauth[i*3+1]>>4)];
+            conn->proxy_auth[i*4+2] = base64_encode[((pauth[i*3+1]&15)<<2)|(pauth[i*3+2]>>6)];
+            conn->proxy_auth[i*4+3] = base64_encode[pauth[i*3+2]&63];
+            if( pauth[i*3+2] == 0 ) conn->proxy_auth[i*4+3] = '=';
+            if( pauth[i*3+1] == 0 ) conn->proxy_auth[i*4+2] = '=';
+        }
+    }
+	
     return( 1 );
 }
 
@@ -107,6 +129,10 @@ void http_get( http_t *conn, char *lurl )
     }
     if( *conn->auth )
         http_addheader( conn, "Authorization: Basic %s", conn->auth );
+    if( *conn->proxy_auth )
+    {
+        http_addheader( conn, "Proxy-Authorization: Basic %s", conn->proxy_auth );
+    }
     if( conn->firstbyte )
     {
         if( conn->lastbyte )

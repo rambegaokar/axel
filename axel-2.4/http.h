@@ -29,6 +29,7 @@ typedef struct
 {
     char host[MAX_STRING];
     char auth[MAX_STRING];
+    char proxy_auth[MAX_STRING];
     char request[MAX_QUERY];
     char headers[MAX_QUERY];
     int proto;            /* FTP through HTTP proxies    */
